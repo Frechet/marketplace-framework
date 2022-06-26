@@ -8,7 +8,7 @@ services:
   keycloak-postgres:
     image: postgres:14
     volumes:
-      - keycloak_postgres_data:/var/lib/postgresql/data
+      - ./keycloak_postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -22,9 +22,11 @@ services:
       DB_USER: keycloak
       DB_SCHEMA: public
       DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: Pa55w0rd
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: Pa55w0rd
+      KC_PROXY: edge
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
     ports:
       - 8080:8080
     depends_on:
-      - postgres
+      - keycloak-postgres
